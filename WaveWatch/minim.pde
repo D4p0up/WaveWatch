@@ -11,50 +11,7 @@ class WaveformRenderer implements AudioListener
 
   synchronized void samples(float[] samp)
   {
-    monostereo=false;
-    int j=2;
-    //    left = samp;
-    if (!stopped) {
-      while (J<A_Buffer) {    
-        if (trigged==false) {
-          int i=0;
-          while ( (i<A_Buffer)&&(samp[i]<triglevel) ) i++;
-          if ( (i<A_Buffer)&&(i>0)&&(samp[i-1]<samp[i]) ) {
-            trigged = true; 
-            J = i;
-          } else J=A_Buffer;
-        } else {  
-          if (display!=1) {
-            display11[int(I)]=samp[int(J)];
-            I++;
-            J=J+tbase;
-            if (I>=W_Width) {
-              I=0; 
-              display=1; 
-              trigged=false;
-              J=A_Buffer; 
-              if (once) stopped=true;
-              freqval1 = false;           
-              while ( (j<512)&&(!((display11[j-1]<triglevel)&&(display11[j]>triglevel)))) j++;
-              if (j<512) freq1 = 40000/(j*tbase_list[i_tbase]); 
-              else freq1=0;
-            }
-          } else {
-            display12[int(I)]=samp[int(J)];
-            I++;
-            J=J+tbase;
-            if (I>=W_Width) {
-              I=0; 
-              display=0; 
-              trigged=false;
-              J=A_Buffer; 
-              if (once) stopped=true;
-            }
-          }
-        }
-      }
-      J=J-A_Buffer;
-    }
+    samples(samp,samp);
   }
 
   synchronized void samples(float[] sampL, float[] sampR)
@@ -66,7 +23,7 @@ class WaveformRenderer implements AudioListener
     if (!stopped) {
       while (J<A_Buffer) {    
         if (trigged==false) {
-          int i=0;
+          int i=0;          
           if (trigin==false) {
             while ( (i<A_Buffer)&&(sampL[i]<triglevel) ) i++;
             if ( (i<A_Buffer)&&(i>0)&&(sampL[i-1]<sampL[i]) ) {
@@ -108,6 +65,14 @@ class WaveformRenderer implements AudioListener
                 vp1=linelevel1/(maxlvl1-minlvl1);
                 vp2=linelevel2/(maxlvl2-minlvl2);
                 alignment=false;
+                output = createWriter("voltage.tsv");
+                output.println("ChA"+TAB+linelevel1+"\t");
+                output.println("ChB"+TAB+linelevel2+"\t");
+                output.println("vp1"+TAB+vp1+"\t");
+                output.println("vp1"+TAB+vp2+"\t");
+                output.flush(); // Write the remaining data
+                output.close(); // Finish the file
+                dfade=100;
               }
               
               // Frequency Measurement

@@ -132,14 +132,15 @@ void draw()
     rect(490, 5, 15, 15, 7);
     text("Stopped",430,16);
   } else {
-    if (trigged|!once) {
+    if (!once|trigged) {
       stroke(128, 255, 128);
       fill(128, 255, 128);
       strokeJoin(ROUND);
       strokeWeight(1);
       rect(490, 5, 15, 15, 7);
       text("Running",430,16);
-    } else {
+    } 
+    else {
       stroke(128, 128, 255);
       fill(128, 128, 255);
       strokeJoin(ROUND);

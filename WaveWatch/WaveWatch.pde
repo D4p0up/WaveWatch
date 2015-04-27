@@ -44,10 +44,12 @@ Minim minim;
 AudioInput in;
 
 // Interface Voltage Tuning 
-float linelevel1=3.3;
-float linelevel2=3.3;
-float vp1=1;
-float vp2=1;
+float linelevel1;
+float linelevel2;
+float vp1;
+float vp2;
+String[] lines;
+PrintWriter output;
 
 // Images
 PImage splash;
@@ -129,6 +131,18 @@ void setup()
   display12 = new float[W_Width];
   display21 = new float[W_Width];
   display22 = new float[W_Width];
+  
+  // Load Tuning Data
+    // Load Data
+  lines = loadStrings("voltage.tsv");
+  String[] pieces = split(lines[0], TAB);
+  linelevel1 = float(pieces[1]);
+  pieces = split(lines[1], TAB);
+  linelevel2 = float(pieces[1]);
+  pieces = split(lines[2], TAB);
+  vp1 = float(pieces[1]);
+  pieces = split(lines[3], TAB);
+  vp2 = float(pieces[1]);
   
 }
 
