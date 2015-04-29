@@ -7,10 +7,10 @@
 
  Open Source Souncard Oscilloscope by Banson
  Background image by Humusak
- V1.0
+ V1.2
  
  http://www.banson.fr/wiki/doku
- 
+  
  =================================================
  Provided under the following license: by-nc-sa
  http://creativecommons.org/licenses/by-nc-sa/4.0/
@@ -55,13 +55,16 @@ PrintWriter output;
 PImage splash;
 
 // Status and Trig
+boolean trig_en = false;
+boolean trig_dir = true;
 boolean trigged = false;
 boolean stopped = false;
-boolean trigdir = false;
 boolean once = false;
 float triglevel = 0.000;
+int trigdelta=0;
 boolean trigin = false;
 boolean alignment=false;
+int started=0;
 
 // Measurement
 int mesure=0;
@@ -84,31 +87,34 @@ float tbase = tbase_list[i_tbase]*44100/40000;
 
 // Frequency Calculation 
 float freq1 = 0;
-boolean freqval1=false; 
+//boolean freqval1=false; 
 float freq2 = 0;
-boolean freqval2=false; 
+//boolean freqval2=false; 
 
 boolean monostereo=false;
 
 // Signal Left
 float[] display11;
-float[] display12;
+float[] l_buffer;
 boolean Ldisplay=true;
 // Signal Right
 float[] display21;
-float[] display22;
+float[] r_buffer;
 boolean Rdisplay=true;
 
 float display=1;
 
 float I=0;
 float J=0;
+float K=0;
 
 int offset1=240;
 int offset2=240;
 
 // Audio Buffer Size
 int A_Buffer=512;
+// Data buffer size
+int D_Buffer=2048;
 // Windows width and height
 int W_Width=512;
 int W_Height=480;
@@ -128,12 +134,12 @@ void setup()
   in.addListener( waveform );
 
   display11 = new float[W_Width];
-  display12 = new float[W_Width];
   display21 = new float[W_Width];
-  display22 = new float[W_Width];
+  l_buffer = new float[D_Buffer];
+  r_buffer = new float[D_Buffer];  
   
   // Load Tuning Data
-    // Load Data
+  // Load Data
   lines = loadStrings("voltage.tsv");
   String[] pieces = split(lines[0], TAB);
   linelevel1 = float(pieces[1]);

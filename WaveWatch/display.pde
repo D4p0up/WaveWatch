@@ -13,7 +13,7 @@ void draw()
   //trigger
   stroke(0, 128, 128);
   strokeWeight(4);
-  line(1, 1, I, 1);
+  line(1, 1, K%512, 1);
 
   // GRID
   stroke(50, 50, 50);
@@ -51,16 +51,9 @@ void draw()
     stroke(255, 128, 128);
     strokeJoin(ROUND);
     strokeWeight(2);
-    if (display==1) {
-      for (int i = 1; i < 511; i++)
-      {
-        line(i, offset1 - display11[i-1]*gain1, i+1, offset1 - display11[i]*gain1);
-      }
-    } else {
-      for (int i = 1; i < 511; i++)
-      {
-        line(i, offset1 - display12[i-1]*gain1, i+1, offset1 - display12[i]*gain1);
-      }
+    for (int i = 1; i < 511; i++)
+    {
+      line(i, offset1 - display11[i-1]*gain1, i+1, offset1 - display11[i]*gain1);
     }
   }
 
@@ -70,56 +63,53 @@ void draw()
     stroke(128, 255, 128);
     strokeJoin(ROUND);
     strokeWeight(2);
-    if (display==1) {
-      for (int i = 1; i < 511; i++)
-      {
-        line(i, offset2 - display21[i-1]*gain2, i+1, offset2 - display21[i]*gain2);
-      }
-    } else {
-      for (int i = 1; i < 511; i++)
-      {
-        line(i, offset2 - display22[i-1]*gain2, i+1, offset2 - display22[i]*gain2);
-      }
+
+    for (int i = 1; i < 511; i++)
+    {
+      line(i, offset2 - display21[i-1]*gain2, i+1, offset2 - display21[i]*gain2);
     }
   }
+
 
   // Origin
   strokeWeight(1);
   strokeJoin(ROUND);
   if (Ldisplay) {
-  stroke(255, 0, 0);
-  line(0, offset1-5, 5, offset1);
-  line(0, offset1+5, 5, offset1);
+    stroke(255, 0, 0);
+    line(0, offset1-5, 5, offset1);
+    line(0, offset1+5, 5, offset1);
   }
   if (Rdisplay) {
-  stroke(0, 255, 0);
-  line(512, offset2-5, 507, offset2);
-  line(512, offset2+5, 507, offset2);
+    stroke(0, 255, 0);
+    line(512, offset2-5, 507, offset2);
+    line(512, offset2+5, 507, offset2);
   }
-  
+
 
 
   // Trigger level
   if (trigin==false) {
     stroke(255, 0, 0);
-    line(0, offset1-gain1*triglevel, 10, offset1-gain1*triglevel);
+    line(trigdelta-6, offset1-gain1*triglevel, trigdelta+6, offset1-gain1*triglevel);
+    line(trigdelta, offset1-gain1*triglevel+6, trigdelta, offset1-gain1*triglevel-6);
   } else {
     stroke(0, 255, 0);
-    line(0, offset2-gain2*triglevel, 10, offset2-gain2*triglevel);
+    line(trigdelta-6, offset2-gain2*triglevel, trigdelta+6, offset2-gain2*triglevel);
+    line(trigdelta, offset2-gain2*triglevel+6, trigdelta, offset2-gain2*triglevel-6);
   }
-    fill(0,0,0);
-    if (Ldisplay) {
-      stroke(255, 128, 128);
-    } else stroke(96, 96, 96);
-    rect(257, 2, 39, 19);
-    if (Rdisplay) {
-      stroke(128, 255, 128);
-    } else  stroke(96, 96, 96);
-   rect(297, 2, 39, 19); 
-    fill(255, 128, 128);
-    text("ChA", 262, 16);
-    fill(128, 255, 128);
-    text("ChB", 302, 16);
+  fill(0, 0, 0);
+  if (Ldisplay) {
+    stroke(255, 128, 128);
+  } else stroke(96, 96, 96);
+  rect(257, 2, 39, 19);
+  if (Rdisplay) {
+    stroke(128, 255, 128);
+  } else  stroke(96, 96, 96);
+  rect(297, 2, 39, 19); 
+  fill(255, 128, 128);
+  text("ChA", 262, 16);
+  fill(128, 255, 128);
+  text("ChB", 302, 16);
 
   // Timebase and mode 
   fill(255, 255, 255);
@@ -130,7 +120,7 @@ void draw()
     strokeJoin(ROUND);
     strokeWeight(1);
     rect(490, 5, 15, 15, 7);
-    text("Stopped",430,16);
+    text("Stopped", 430, 16);
   } else {
     if (!once|trigged) {
       stroke(128, 255, 128);
@@ -138,18 +128,17 @@ void draw()
       strokeJoin(ROUND);
       strokeWeight(1);
       rect(490, 5, 15, 15, 7);
-      text("Running",430,16);
-    } 
-    else {
+      text("Running", 430, 16);
+    } else {
       stroke(128, 128, 255);
       fill(128, 128, 255);
       strokeJoin(ROUND);
       strokeWeight(1);
       rect(490, 5, 15, 15, 7);
-      text("Ready",430,16);
+      text("Ready", 430, 16);
     }
   }
-   
+
 
   // Channel Data
   if (Ldisplay) {
@@ -162,8 +151,8 @@ void draw()
     text("V:"+vp2*40/gain2+"V", 262, 475);
     if (trigin) text("F:"+round(freq2)+"Hz", 382, 475);
   }
-  
-    stroke(255, 255, 255);
+
+  stroke(255, 255, 255);
   // Cursors
   switch (mesure) {
   case 0:
@@ -201,98 +190,108 @@ void draw()
     line(m2X, m2Y, m2X, m2Y-10);   
     fill(255, 255, 255);
     text("dT:"+(m2X-m1X)*tbase_list[i_tbase]/40+"ms", 382, 440);
+    text("F:"+abs(round(1000/((m2X-m1X)*tbase_list[i_tbase]/40)))+"Hz", 302, 450);
     text("dV:"+(m2Y-m1Y)/gain1*vp1+"V", 382, 450);
     break;
   }
-  
+
   // Bottom UI
-  strokeWeight(1);
   fill(0, 0, 0);
-   if (trigin==false) {
+  if (trigin==false) {
     stroke(255, 128, 128);
-    rect(16,481,39,19);
+    rect(16, 481, 39, 19);
     fill(255, 128, 128);
-    text("TrigA",20,495);
+    text("TrigA", 20, 495);
   } else {
     stroke(128, 255, 128);
-    rect(16,481,39,19);
+    rect(16, 481, 39, 19);
     fill(128, 255, 128);
-    text("TrigB",20,495);
+    text("TrigB", 20, 495);
   }
-  
+
   fill(0, 0, 0);
   stroke(255, 128, 128);
-  rect(56,481,79,19);
+  rect(56, 481, 79, 19);
   fill(255, 128, 128);
-  text("Gain",82,495);
-  text("+",65,495);
-  text("-",115,495);
-  
+  text("Gain", 82, 495);
+  text("+", 65, 495);
+  text("-", 115, 495);
+
   fill(0, 0, 0);
   stroke(128, 255, 128);
-  rect(136,481,79,19);
+  rect(136, 481, 79, 19);
   fill(128, 255, 128);
-  text("Gain",162,495);
-  text("+",145,495);
-  text("-",195,495);
-  
+  text("Gain", 162, 495);
+  text("+", 145, 495);
+  text("-", 195, 495);
+
   fill(0, 0, 0);
   stroke(168, 168, 168);
-  rect(216,481,79,19);
+  rect(216, 481, 79, 19);
   fill(168, 168, 168);
-  text("Time",242,495);
-  text("+",225,495);
-  text("-",277,495);
-  
-  fill(0,0,0);
+  text("Time", 242, 495);
+  text("+", 225, 495);
+  text("-", 277, 495);
+
+  fill(0, 0, 0);
   stroke(168, 168, 168);
-  rect(296,481,39,19);
+  rect(296, 481, 39, 19);
   fill(168, 168, 168);
   if (once) {
     fill(168, 168, 200);
     text("Single", 300, 495);
-  } 
-  else {
+  } else {
     fill(168, 200, 168);
     text("Auto", 303, 495);
   }
-  
-  fill(0,0,0);
+
+  fill(0, 0, 0);
   stroke(168, 168, 168);
-  rect(336,481,39,19);
+  rect(336, 481, 39, 19);
   if (stopped) {
     fill(168, 255, 168);
     text("Start", 343, 495);
-  } 
-  else {
+  } else {
     fill(255, 168, 168);
     text("Stop", 344, 495);
   }
-  
-  fill(0, 0, 0);
+
+  if (trig_en) fill(128, 128, 128);
+  else fill(0,0,0);
   stroke(168, 168, 168);
-  rect(376,481,79,19);
-  fill(168, 168, 168);
-  text("Trig",402,495);
-  text("+",385,495);
-  text("-",437,495);
+  rect(376, 481, 79, 19);
+  line(416,481,416,500);
+  if (trig_en) fill(0, 0, 0);
+  else fill(168, 168, 168);
+  text("Trig", 384, 495);
   
+  // Rise Or Fall
+  stroke(255, 255, 255);
+  if (trig_dir) {
+    line(420,495,430,495);
+    line(430,495,440,485);
+    line(440,485,450,485);
+  } else {
+    line(420,485,430,485);
+    line(430,485,440,495);
+    line(440,495,450,495);
+  }  
+
   if (mesure!=0) {
-    fill(255,255,255);
-    stroke(168, 168, 200);
-    rect(456,481,39,19);
+    fill(255, 255, 255);
+    stroke(168, 168, 168);
+    rect(456, 481, 39, 19);
     fill(0, 0, 0);
     text("Meas", 460, 495);
-  } 
-  else {
+  } else {
+    stroke(168, 168, 168);
     fill(0, 0, 0);
-    rect(456,481,39,19);
+    rect(456, 481, 39, 19);
     fill(168, 200, 168);
     text("Meas", 460, 495);
   }
   fill(168, 168, 0);
-  text("?",503,495);
-  text("i",5,495);
-  
+  text("?", 503, 495);
+  text("i", 5, 495);
 }
 
