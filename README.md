@@ -1,6 +1,7 @@
-# WaveWatch
-===========
+# WaveWatch & WaveMake
+======================
 Soundcard Oscilloscope for Processing v1.2
+Soundcard Waveform Generator v1.0
 
 Project Homepage: http://www.banson.fr/wiki/doku.php?id=wavewatch
 

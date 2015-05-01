@@ -9,7 +9,7 @@
  Background image by Humusak
  V1.2
  
- http://www.banson.fr/wiki/doku
+ http://www.banson.fr/wiki/doku.php?id=wavewatch
   
  =================================================
  Provided under the following license: by-nc-sa
