@@ -26,11 +26,11 @@ class WaveformRenderer implements AudioListener
         if (K>=D_Buffer) K=0;
         J=J+tbase;
         // 2/4 de buffer
-        if (K==1536) {
+        if (K==3072) {
           if (started==0) {
-            int i=512;
+            int i=1024;
             boolean found=false;
-            while ( (i<1023)&&(found==false)) { 
+            while ( (i<2047)&&(found==false)) { 
               if (trig_dir) { 
                 if ((l_buffer[i]<triglevel)&&(l_buffer[i+1]>=triglevel)&&(!trigin)) found=true;
                 if ((r_buffer[i]<triglevel)&&(r_buffer[i+1]>=triglevel)&&(trigin)) found=true;
@@ -42,19 +42,20 @@ class WaveformRenderer implements AudioListener
               i=i+1;
             }
             if (found) {
-              for (int j=0; j<512; j=j+1) {
+              for (int j=0; j<1024; j=j+1) {
                 display11[j]=l_buffer[i+j-trigdelta];
                 display21[j]=r_buffer[i+j-trigdelta];
               }
               if (once) stopped=true;
             }
+            
             // Alignment
             if (alignment) {
               float minlvl1=10;
               float maxlvl1=-10;
               float minlvl2=10;
               float maxlvl2=-10;                
-              for (int j=0; j<512; j++) {
+              for (int j=0; j<1024; j++) {
                 if (minlvl1>display11[j]) minlvl1=display11[j];
                 if (maxlvl1<display11[j]) maxlvl1=display11[j];
                 if (minlvl2>display21[j]) minlvl2=display21[j];
@@ -67,30 +68,31 @@ class WaveformRenderer implements AudioListener
               output.println("ChA"+TAB+linelevel1+"\t");
               output.println("ChB"+TAB+linelevel2+"\t");
               output.println("vp1"+TAB+vp1+"\t");
-              output.println("vp1"+TAB+vp2+"\t");
+              output.println("vp2"+TAB+vp2+"\t");
               output.flush(); // Write the remaining data
               output.close(); // Finish the file
               dfade=100;
             }
+            
             // Frequency Measurement
             //              freqval1 = false;
             //              freqval2 = false;    
-            int j=(trigdelta+2)%512;       
-            while ( (j<512)&&(!((display11[j-1]<=triglevel)&&(display11[j]>triglevel)))) j++;
-            if (j<512) freq1 = 40000/((j-trigdelta)*tbase_list[i_tbase]); 
+            int j=(trigdelta+2)%1024;       
+            while ( (j<1024)&&(!((display11[j-1]<=triglevel)&&(display11[j]>triglevel)))) j++;
+            if (j<1024) freq1 = 40000/((j-trigdelta)*tbase_list[i_tbase]); 
             else freq1=0;
-            j=(trigdelta+2)%512;
-            while ( (j<512)&&(!((display21[j-1]<=triglevel)&&(display21[j]>triglevel)))) j++;
-            if (j<512) freq2 = 40000/((j-trigdelta)*tbase_list[i_tbase]); 
+            j=(trigdelta+2)%1024;
+            while ( (j<1024)&&(!((display21[j-1]<=triglevel)&&(display21[j]>triglevel)))) j++;
+            if (j<1024) freq2 = 40000/((j-trigdelta)*tbase_list[i_tbase]); 
             else freq2=0;
           } else started=started-1;
         }
         // 3/4 de buffer
         if (K==0) {
           if (started==0) {
-            int i=1024;
+            int i=2048;
             boolean found=false;
-            while ( (i<1535)&&(found==false)) {
+            while ( (i<3071)&&(found==false)) {
               if (trig_dir) { 
                 if ((l_buffer[i]<triglevel)&&(l_buffer[i+1]>=triglevel)&&(!trigin)) found=true;
                 if ((r_buffer[i]<triglevel)&&(r_buffer[i+1]>=triglevel)&&(trigin)) found=true;
@@ -99,9 +101,10 @@ class WaveformRenderer implements AudioListener
                 if ((l_buffer[i]>triglevel)&&(l_buffer[i+1]<=triglevel)&&(!trigin)) found=true;
                 if ((r_buffer[i]>triglevel)&&(r_buffer[i+1]<=triglevel)&&(trigin)) found=true;
               }               
-              i=i+1;            }
+              i=i+1;
+            }
             if (found) {
-              for (int j=0; j<512; j=j+1) {
+              for (int j=0; j<1024; j=j+1) {
                 display11[j]=l_buffer[i+j-trigdelta];
                 display21[j]=r_buffer[i+j-trigdelta];
               }
@@ -110,11 +113,11 @@ class WaveformRenderer implements AudioListener
           } else started=started-1;
         }       
         // 4/4 de buffer
-        if (K==512) {
+        if (K==1024) {
           if (started==0) {
-            int i=1535;
+            int i=3071;
             boolean found=false;
-            while ( (i<2047)&&(found==false)) {
+            while ( (i<4095)&&(found==false)) {
               if (trig_dir) { 
                 if ((l_buffer[i]<triglevel)&&(l_buffer[i+1]>=triglevel)&&(!trigin)) found=true;
                 if ((r_buffer[i]<triglevel)&&(r_buffer[i+1]>=triglevel)&&(trigin)) found=true;
@@ -123,22 +126,23 @@ class WaveformRenderer implements AudioListener
                 if ((l_buffer[i]>triglevel)&&(l_buffer[i+1]<=triglevel)&&(!trigin)) found=true;
                 if ((r_buffer[i]>triglevel)&&(r_buffer[i+1]<=triglevel)&&(trigin)) found=true;
               }               
-              i=i+1;            }
+              i=i+1;
+            }
             if (found) {
-              for (int j=0; j<512; j=j+1) {
-                display11[j]=l_buffer[(i+j-trigdelta)%2048];
-                display21[j]=r_buffer[(i+j-trigdelta)%2048];
+              for (int j=0; j<1024; j=j+1) {
+                display11[j]=l_buffer[(i+j-trigdelta)%4096];
+                display21[j]=r_buffer[(i+j-trigdelta)%4096];
               }
               if (once) stopped=true;
             }
           } else started=started-1;
         }    
         // 1/4 de buffer
-        if (K==1024) {
+        if (K==2048) {
           if (started==0) {
             int i=0;
             boolean found=false;
-            while ( (i<511)&&(found==false)) {
+            while ( (i<1023)&&(found==false)) {
               if (trig_dir) { 
                 if ((l_buffer[i]<triglevel)&&(l_buffer[i+1]>=triglevel)&&(!trigin)) found=true;
                 if ((r_buffer[i]<triglevel)&&(r_buffer[i+1]>=triglevel)&&(trigin)) found=true;
@@ -147,17 +151,18 @@ class WaveformRenderer implements AudioListener
                 if ((l_buffer[i]>triglevel)&&(l_buffer[i+1]<=triglevel)&&(!trigin)) found=true;
                 if ((r_buffer[i]>triglevel)&&(r_buffer[i+1]<=triglevel)&&(trigin)) found=true;
               }               
-              i=i+1;            }
+              i=i+1;
+            }
             if (found) {
-              for (int j=0; j<512; j=j+1) {
-                display11[j]=l_buffer[(i+j-trigdelta+2048)%2048];
-                display21[j]=r_buffer[(i+j-trigdelta+2048)%2048];
+              for (int j=0; j<1024; j=j+1) {
+                display11[j]=l_buffer[(i+j-trigdelta+4096)%4096];
+                display21[j]=r_buffer[(i+j-trigdelta+4096)%4096];
               }
               if (once) stopped=true;
             }
           } else started=started-1;
         }          
-//=======================================
+        //=======================================
       }
       J=J-A_Buffer;
     }
@@ -171,4 +176,3 @@ void stop()
   minim.stop();
   super.stop();
 }
-

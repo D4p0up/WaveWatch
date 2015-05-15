@@ -1,36 +1,36 @@
 /* 
  ==================================================
-  _      __             _      __     __      __ 
+ _      __             _      __     __      __ 
  | | /| / /__ __  _____| | /| / /__ _/ /_____/ / 
  | |/ |/ / _ `/ |/ / -_) |/ |/ / _ `/ __/ __/ _ \
  |__/|__/\_,_/|___/\__/|__/|__/\_,_/\__/\__/_//_/
-
+ 
  Open Source Souncard Oscilloscope by Banson
  Background image by Humusak
- V1.2
+ V1.3
  
  http://www.banson.fr/wiki/doku.php?id=wavewatch
-  
+ 
  =================================================
  Provided under the following license: by-nc-sa
  http://creativecommons.org/licenses/by-nc-sa/4.0/
  =================================================
  
-Basic Controls :
+ Basic Controls :
  'u' and 'j' : Turn Left & Right Channel ON and OFF
  'e' and 'd' : Left Channel Gain
  'r' and 'f' : Right CHannel Gain
  'c' and 'v' : Time Base adjusting
  mouse click on leftmost or rightmost points of the window moves Channel origin
-
-Advanced Controls :
+ 
+ Advanced Controls :
  't' and 'g' : Trigger level adjustment
  'h' : Toggles triggering from channel A to channel B
  'b' : Activates measurement cursors
  'y' : Toggles between Auto and Single mode
  spacebar : Pause and Resume
  
-And of course :
+ And of course :
  'o' : Exit Scope
  
  */
@@ -61,7 +61,7 @@ boolean trigged = false;
 boolean stopped = false;
 boolean once = false;
 float triglevel = 0.000;
-int trigdelta=0;
+int trigdelta=256;
 boolean trigin = false;
 boolean alignment=false;
 int started=0;
@@ -114,16 +114,16 @@ int offset2=240;
 // Audio Buffer Size
 int A_Buffer=512;
 // Data buffer size
-int D_Buffer=2048;
+int D_Buffer=4096;
 // Windows width and height
-int W_Width=512;
+int W_Width=1024;
 int W_Height=480;
 
 WaveformRenderer waveform;
 
 void setup()
 {
-  size(W_Width, W_Height+20, P3D);
+  size(1024, 500);
 
   splash = loadImage("data/splash.jpg");
 
@@ -137,7 +137,7 @@ void setup()
   display21 = new float[W_Width];
   l_buffer = new float[D_Buffer];
   r_buffer = new float[D_Buffer];  
-  
+
   // Load Tuning Data
   // Load Data
   lines = loadStrings("voltage.tsv");
@@ -149,10 +149,4 @@ void setup()
   vp1 = float(pieces[1]);
   pieces = split(lines[3], TAB);
   vp2 = float(pieces[1]);
-  
 }
-
-
-
-
-

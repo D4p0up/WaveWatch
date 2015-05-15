@@ -3,23 +3,22 @@ void mouseDragged()
   if ((mouseX<20)&&(mouseY<450)) {
     offset1=mouseY;
   }
-  if ((mouseX>492)&&(mouseY<450)) {
+  if ((mouseX>1000)&&(mouseY<450)) {
     offset2=mouseY;
   }
   if (offset1<5) offset1=5;
   if (offset1>450) offset1=450;
   if (offset2<5) offset2=5;
   if (offset2>450) offset2=450;
-  
+
   if ((mouseX>21)&&(mouseX<491)&&(mouseY>21)&&(mouseY<459)&&(mesure==0)&&trig_en) {
-  if (!trigin) {
-    triglevel=(float(mouseY)-offset1)*(-1)/gain1;
-  } else {
-    triglevel=(float(mouseY)-offset2)*(-1)/gain2;
-  }
+    if (!trigin) {
+      triglevel=(float(mouseY)-offset1)*(-1)/gain1;
+    } else {
+      triglevel=(float(mouseY)-offset2)*(-1)/gain2;
+    }
     trigdelta=mouseX;
   }
-  
 }
 
 void mousePressed() 
@@ -27,7 +26,7 @@ void mousePressed()
   if ((mouseX<20)&&(mouseY<450)) {
     offset1=mouseY;
   }
-  if ((mouseX>492)&&(mouseY<450)) {
+  if ((mouseX>1000)&&(mouseY<450)) {
     offset2=mouseY;
   }    
 
@@ -54,45 +53,45 @@ void mousePressed()
     break;
   }
 
-  if (mouseY<21) {
-    if ((mouseX>256)&&(mouseX<296)) {
+
+  if (mouseY>(W_Height)) {
+    if ((mouseX>32)&&(mouseX<72)) {
       if (Ldisplay) Ldisplay=false; 
       else Ldisplay=true;
     }
-    if ((mouseX>296)&&(mouseX<336)) {
+    if ((mouseX>192)&&(mouseX<236)) {
       if (Rdisplay) Rdisplay=false; 
       else Rdisplay=true;
     }
-  } else if (mouseY>(W_Height)) {
-    if ((mouseX>16)&&(mouseX<56)) {
+    if ((mouseX>632)&&(mouseX<672)) {
       if (trigin==false) trigin=true; 
       else trigin=false;
     }
-    if ((mouseX>56)&&(mouseX<96)) {
+    if ((mouseX>72)&&(mouseX<112)) {
       gain1 = gain1 * 1.5; 
       if (gain1>10000)gain1=10000;
     }    
-    if ((mouseX>96)&&(mouseX<136)) {
+    if ((mouseX>112)&&(mouseX<152)) {
       gain1 = gain1 / 1.5; 
       if (gain1<1) gain1=1;
     }
-    if ((mouseX>136)&&(mouseX<176)) {
+    if ((mouseX>232)&&(mouseX<272)) {
       gain2 = gain2 * 1.5; 
       if (gain2>10000)gain2=10000;
     }       
-    if ((mouseX>176)&&(mouseX<216)) {
+    if ((mouseX>272)&&(mouseX<312)) {
       gain2 = gain2 / 1.5; 
       if (gain2<1) gain2=1;
     }   
-    if ((mouseX>216)&&(mouseX<256)) {
+    if ((mouseX>392)&&(mouseX<432)) {
       if (i_tbase<14) i_tbase=i_tbase+1;
       tbase = tbase_list[i_tbase]*44100/40000;
     }       
-    if ((mouseX>256)&&(mouseX<296)) {
+    if ((mouseX>432)&&(mouseX<476)) {
       if (i_tbase>0) i_tbase=i_tbase-1;
       tbase = tbase_list[i_tbase]*44100/40000;
     }
-    if ((mouseX>296)&&(mouseX<336)) {
+    if ((mouseX>752)&&(mouseX<792)) {
       if (once) {
         once=false; 
         stopped=false;
@@ -103,7 +102,7 @@ void mousePressed()
         J=0;
       }
     }     
-    if ((mouseX>336)&&(mouseX<376)) {
+    if ((mouseX>792)&&(mouseX<832)) {
       if (stopped) stopped = false;
       else {
         stopped = true;
@@ -112,33 +111,35 @@ void mousePressed()
       }
       started=2;
     }   
-    if ((mouseX>376)&&(mouseX<416)) {
-      if (trig_en) trig_en=false; else trig_en=true;
+    if ((mouseX>672)&&(mouseX<712)) {
+      if (trig_en) trig_en=false; 
+      else trig_en=true;
     } 
-    if ((mouseX>416)&&(mouseX<456)) {
-      if (trig_dir) trig_dir=false; else trig_dir=true;
+    if ((mouseX>712)&&(mouseX<752)) {
+      if (trig_dir) trig_dir=false; 
+      else trig_dir=true;
     } 
-    if ((mouseX>456)&&(mouseX<496)) {
+    if ((mouseX>912)&&(mouseX<992)) {
       if (mesure!=0) mesure=0; 
       else mesure=1;
     } 
-    if ((mouseX>496)&&(mouseX<512)) {
+    if ((mouseX>1000)&&(mouseX<1024)) {
       showMessageDialog(null, "Keyboard Shortcuts :\n\r- 'u' and 'j' : Turn Left & Right Channel ON and OFF\n\r- 'e' and 'd' : Left Channel Gain\n\r- 'r' and 'f' : Right CHannel Gain\n\r- 'c' and 'v' : Time Base adjusting\n\r- mouse click on leftmost or rightmost window moves the origin\n\rAdvanced Controls :\n\r- 't' and 'g' : Trigger level adjustment\n\r- 'h' : Toggles triggering from channel A to channel B\n\r- 'b' : Activates measurement cursors\n\r- 'y' : Toggles between Auto and Single mode\n\r- 'k' : Aligns input voltage level\n\r- spacebar : Pause and Resume\n\rAnd of course :\n\r- 'o' : Exit Scope", 
-      "Info", INFORMATION_MESSAGE);
+      "Controls", INFORMATION_MESSAGE);
     }
     if ((mouseX>0)&&(mouseX<16)) {
-      showMessageDialog(null, "WaveWatch version 1.0\n\rSoundcard Scope\n\rBy banson\n\rwww.banson.fr", 
+      showMessageDialog(null, "WaveWatch version 1.3\n\rSoundcard Scope\n\rBy banson\n\rwww.banson.fr", 
       "Info", INFORMATION_MESSAGE);
     }
   } 
-  
+
   // Trig
-  if ((mouseX>21)&&(mouseX<491)&&(mouseY>21)&&(mouseY<459)&&(mesure==0)&&trig_en) {
-  if (!trigin) {
-    triglevel=(float(mouseY)-offset1)*(-1)/gain1;
-  } else {
-    triglevel=(float(mouseY)-offset2)*(-1)/gain2;
-  }
+  if ((mouseX>21)&&(mouseX<1000)&&(mouseY>21)&&(mouseY<459)&&(mesure==0)&&trig_en) {
+    if (!trigin) {
+      triglevel=(float(mouseY)-offset1)*(-1)/gain1;
+    } else {
+      triglevel=(float(mouseY)-offset2)*(-1)/gain2;
+    }
     trigdelta=mouseX;
   }
 }
@@ -219,8 +220,9 @@ void keyPressed()
     else Rdisplay=true;
     break;
   case 'o':
+    while (dfade<235) {
     exit();
     break;
+    }
   }
 }
-
