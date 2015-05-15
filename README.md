@@ -6,6 +6,7 @@ Soundcard Waveform Generator v1.0
 Project Homepage: http://www.banson.fr/wiki/doku.php?id=wavewatch
 
 1.3 : MMI revamp and resolution increase
+
 	- Horizontal display size doubled, display resolution is now 1024*480 pixels
 	- Bottom menu re-organised, trigger and channel buttons were put together
 	- Measurement mode display revised to allow live display of deltas during measurement
