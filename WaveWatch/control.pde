@@ -11,7 +11,7 @@ void mouseDragged()
   if (offset2<5) offset2=5;
   if (offset2>450) offset2=450;
 
-  if ((mouseX>21)&&(mouseX<491)&&(mouseY>21)&&(mouseY<459)&&(mesure==0)&&trig_en) {
+  if ((mouseX>21)&&(mouseX<1000)&&(mouseY>21)&&(mouseY<459)&&(mesure==0)&&trig_en) {
     if (!trigin) {
       triglevel=(float(mouseY)-offset1)*(-1)/gain1;
     } else {

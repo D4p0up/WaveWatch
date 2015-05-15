@@ -11,7 +11,7 @@ Project Homepage: http://www.banson.fr/wiki/doku.php?id=wavewatch
 	- Bottom menu re-organised, trigger and channel buttons were put together
 	- Measurement mode display revised to allow live display of deltas during measurement
 	- Fixed tsv file saving error that stored vp2 with vp1 label instead of vp2
-	- Several bug fixes at display level
+	- Several bug fixes at display level, including dragging trigger point
 
 1.2 : Major update - Triggering method and sample handling re-forged to handle multi point triggering, trigger level is now set by clicking right on the screen
 
